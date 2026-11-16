@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGT-Edu | Institución Educativa San Fernando</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fuente Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+    }
+
+    /* Degradado fiel al encabezado institucional */
+    .header-gradient {
+      background: linear-gradient(90deg, #1e3a8a 0%, #5b21b6 48%, #0d9488 100%);
+    }
+
+    /* Animaciones suaves para modales y notificaciones */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97) translateY(6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-modal {
+      animation: fadeIn 0.18s ease-out forwards;
+    }
+
+    /* Estilos optimizados para impresión */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: #ffffff !important;
+      }
+      .header-gradient {
+        background: #1e3a8a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .shadow-sm, .shadow-md, .shadow-lg {
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800 antialiased">
+
+  <!-- ==================== ENCABEZADO INSTITUCIONAL ==================== -->
+  <header class="header-gradient text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <!-- Esquina superior izquierda: Logo y título institucional -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
+          <!-- Ícono Edificio Institucional / Escuela -->
+          <svg class="w-7 h-7 text-teal-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18" />
+            <path d="M5 21V7l7-4 7 4v14" />
+            <path d="M9 21v-6h6v6" />
+            <path d="M9 9h.01" />
+            <path d="M15 9h.01" />
+            <path d="M9 12h.01" />
+            <path d="M15 12h.01" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight leading-tight text-white">
+            Institución Educativa San Fernando
+          </h1>
+          <p class="text-xs sm:text-sm text-indigo-100/90 font-medium">
+            SGT-Edu: Sistema de Gestión Tecnológica
+          </p>
+        </div>
+      </div>
+
+      <!-- Esquina superior derecha: Botones de acción principales separados -->
+      <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end no-print">
+        <button
+          id="header-report-btn"
+          type="button"
+          onclick="openReportModal()"
+          class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#ef4444] hover:bg-red-600 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition cursor-pointer"
+        >
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+          </svg>
+          <span>Reportar Fallo</span>
+        </button>
+
+        <button
+          id="header-add-btn"
+          type="button"
+          onclick="openDeviceModal()"
+          class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0d9488] hover:bg-teal-600 active:scale-[0.99] text-white font-semibold text-sm shadow-sm border border-teal-400/30 transition cursor-pointer"
+        >
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span>Nuevo Dispositivo</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== ACCESO DE USUARIOS ==================== -->
+  <section id="auth-section" class="flex-1 w-full max-w-xl mx-auto px-4 py-10">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sm:p-8">
+      <div class="text-center mb-6">
+        <div class="mx-auto w-14 h-14 rounded-2xl header-gradient flex items-center justify-center text-white text-2xl font-bold">SG</div>
+        <h2 class="text-xl font-extrabold text-slate-800 mt-4">Acceso a SGT-Edu</h2>
+        <p class="text-sm text-slate-500 mt-1">Inicia sesión o crea una cuenta para consultar el inventario institucional.</p>
+      </div>
+      <div class="flex gap-2 mb-5">
+        <button id="login-tab" type="button" onclick="showAuthMode('login')" class="flex-1 py-2.5 rounded-xl bg-teal-600 text-white text-sm font-semibold">Iniciar sesión</button>
+        <button id="signup-tab" type="button" onclick="showAuthMode('signup')" class="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-sm font-semibold">Registrarse</button>
+      </div>
+      <form id="login-form" class="space-y-4" onsubmit="signIn(event)">
+        <div><label for="login-email" class="block text-xs font-bold text-slate-500 mb-1.5">CORREO ELECTRÓNICO</label><input id="login-email" type="email" required autocomplete="email" class="w-full px-3.5 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30" placeholder="correo@ejemplo.com"></div>
+        <div><label for="login-password" class="block text-xs font-bold text-slate-500 mb-1.5">CONTRASEÑA</label><input id="login-password" type="password" required autocomplete="current-password" class="w-full px-3.5 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30" placeholder="Tu contraseña"></div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold">Entrar a SGT-Edu</button>
+      </form>
+      <form id="signup-form" class="hidden space-y-4" onsubmit="signUp(event)">
+        <div><label for="signup-name" class="block text-xs font-bold text-slate-500 mb-1.5">NOMBRE COMPLETO</label><input id="signup-name" type="text" required maxlength="100" autocomplete="name" class="w-full px-3.5 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30" placeholder="Tu nombre"></div>
+        <div><label for="signup-email" class="block text-xs font-bold text-slate-500 mb-1.5">CORREO ELECTRÓNICO</label><input id="signup-email" type="email" required autocomplete="email" class="w-full px-3.5 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30" placeholder="correo@ejemplo.com"></div>
+        <div><label for="signup-password" class="block text-xs font-bold text-slate-500 mb-1.5">CONTRASEÑA (MÍNIMO 8 CARACTERES)</label><input id="signup-password" type="password" required minlength="8" autocomplete="new-password" class="w-full px-3.5 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30" placeholder="Crea una contraseña"></div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold">Crear cuenta</button>
+        <p class="text-xs text-slate-400 text-center">Las cuentas nuevas reciben automáticamente el rol Consulta.</p>
+      </form>
+      <p id="auth-message" class="text-sm text-center mt-4 text-slate-500" role="status"></p>
+    </div>
+  </section>
+
+  <section id="user-bar" class="hidden max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-5 no-print">
+    <div class="bg-white border border-slate-100 rounded-xl px-4 py-3 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+      <div><p id="user-name" class="text-sm font-bold text-slate-800"></p><p id="user-role" class="text-xs text-slate-500"></p></div>
+      <button type="button" onclick="signOut()" class="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">Cerrar sesión</button>
+    </div>
+  </section>
+
+  <section id="admin-panel" class="hidden max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 no-print">
+    <div class="bg-white border border-slate-100 rounded-2xl p-5">
+      <h2 class="font-bold text-slate-800">Administración de usuarios</h2>
+      <p class="text-xs text-slate-500 mt-1 mb-4">Solo el administrador puede asignar o cambiar roles.</p>
+      <div id="users-list" class="space-y-2 text-sm"><p class="text-slate-400">Cargando usuarios...</p></div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main id="app-main" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+
+    <!-- 1. TARJETAS DE INDICADORES (KPI CARDS - 6 COLUMNAS EN ESCRITORIO) -->
+    <section aria-label="Indicadores del inventario tecnológico" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <!-- KPI 1: TOTAL -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between transition hover:shadow-md">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">TOTAL</span>
+          <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="12" rx="2" />
+              <line x1="2" y1="20" x2="22" y2="20" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div id="kpi-total" class="text-3xl font-extrabold text-slate-900 leading-none">0</div>
+          <p class="text-xs text-slate-400 font-medium mt-1.5">Dispositivos</p>
+        </div>
+      </div>
+
+      <!-- KPI 2: FUNCIONANDO -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between transition hover:shadow-md">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">FUNCIONANDO</span>
+          <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div id="kpi-working" class="text-3xl font-extrabold text-[#10b981] leading-none">0</div>
+          <p class="text-xs text-slate-400 font-medium mt-1.5">Operativos</p>
+        </div>
+      </div>
+
+      <!-- KPI 3: REPORTADOS -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between transition hover:shadow-md">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">REPORTADOS</span>
+          <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div id="kpi-reported" class="text-3xl font-extrabold text-[#f59e0b] leading-none">0</div>
+          <p class="text-xs text-slate-400 font-medium mt-1.5">Con incidencias</p>
+        </div>
+      </div>
+
+      <!-- KPI 4: REPARACIÓN -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between transition hover:shadow-md">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">REPARACIÓN</span>
+          <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div id="kpi-repair" class="text-3xl font-extrabold text-[#8b5cf6] leading-none">0</div>
+          <p class="text-xs text-slate-400 font-medium mt-1.5">En taller / soporte</p>
+        </div>
+      </div>
+
+      <!-- KPI 5: FALLOS GRAVES (NIVEL 3) -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between transition hover:shadow-md">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">FALLOS GRAVES</span>
+          <div class="w-9 h-9 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152-.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 011.925-3.545 3.75 3.75 0 013.255 3.717z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div id="kpi-severe" class="text-3xl font-extrabold text-[#f97316] leading-none">0</div>
+          <p class="text-xs text-slate-400 font-medium mt-1.5">Nivel 3</p>
+        </div>
+      </div>
+
+      <!-- KPI 6: RIESGO CRÍTICO (NIVEL 4 PELIGRO) -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between transition hover:shadow-md">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">RIESGO CRÍTICO</span>
+          <div class="w-9 h-9 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+            <!-- Ícono Radiación / Riesgo Crítico -->
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z" opacity="0.25"/>
+              <circle cx="12" cy="12" r="2.2" />
+              <path d="M9.8 8.2 7.1 3.6a9.9 9.9 0 0 1 9.8 0l-2.7 4.6a4.4 4.4 0 0 0-4.4 0z" />
+              <path d="M7.6 12a4.4 4.4 0 0 0 2.2 3.8l-2.7 4.6a9.9 9.9 0 0 1-4.9-8.4h5.4z" />
+              <path d="M16.4 12h5.4a9.9 9.9 0 0 1-4.9 8.4l-2.7-4.6A4.4 4.4 0 0 0 16.4 12z" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div id="kpi-critical" class="text-3xl font-extrabold text-[#ef4444] leading-none">0</div>
+          <p class="text-xs text-slate-400 font-medium mt-1.5">Nivel 4 (Peligro)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. BARRA DE HERRAMIENTAS Y FILTROS -->
+    <section aria-label="Filtros y herramientas de inventario" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 no-print">
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+        <!-- Buscador -->
+        <div class="relative flex-1">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="text"
+            id="search-input"
+            oninput="renderInventory()"
+            placeholder="Buscar por código, nombre, ubicación..."
+            class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition placeholder:text-slate-400"
+          />
+        </div>
+
+        <!-- Selector de Tipos -->
+        <div class="sm:w-48">
+          <select
+            id="filter-type"
+            onchange="renderInventory()"
+            class="w-full px-3.5 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 cursor-pointer"
+          >
+            <option value="ALL">Todos los Tipos</option>
+            <option value="Computador de Escritorio">Computador de Escritorio</option>
+            <option value="Portátil">Portátil</option>
+            <option value="Proyector / Video Beam">Proyector / Video Beam</option>
+            <option value="Pantalla Interactiva">Pantalla Interactiva</option>
+            <option value="Red / Router">Red / Router</option>
+            <option value="Impresora">Impresora</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <!-- Selector de Estados -->
+        <div class="sm:w-44">
+          <select
+            id="filter-status"
+            onchange="renderInventory()"
+            class="w-full px-3.5 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 cursor-pointer"
+          >
+            <option value="ALL">Todos los Estados</option>
+            <option value="Funcionando">Funcionando</option>
+            <option value="Reportado">Reportado</option>
+            <option value="En Reparación">En Reparación</option>
+          </select>
+        </div>
+
+        <!-- Botones de Acción de Archivo -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Exportar Excel (CSV) -->
+          <button
+            type="button"
+            id="export-btn"
+            onclick="exportToExcel()"
+            class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#059669] hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer"
+            title="Descargar inventario en formato compatible con Excel"
+          >
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+            <span>Exportar Excel</span>
+          </button>
+
+          <!-- Importar -->
+          <button
+            type="button"
+            id="import-btn"
+            onclick="document.getElementById('import-file-input').click()"
+            class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#1e293b] hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer"
+            title="Importar respaldo JSON o CSV"
+          >
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <span>Importar</span>
+          </button>
+          <input type="file" id="import-file-input" accept=".json,.csv" class="hidden" onchange="importFile(event)" />
+
+          <!-- Imprimir -->
+          <button
+            type="button"
+            onclick="window.print()"
+            class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs sm:text-sm font-semibold transition cursor-pointer"
+            title="Imprimir reporte de inventario"
+          >
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9" />
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+              <rect x="6" y="14" width="12" height="8" />
+            </svg>
+            <span>Imprimir</span>
+          </button>
+
+          <!-- Limpiar / Vaciar Inventario -->
+          <button
+            type="button"
+            id="clear-btn"
+            onclick="openClearConfirmModal()"
+            class="p-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 border border-red-100 transition cursor-pointer"
+            title="Vaciar todo el inventario"
+            aria-label="Vaciar todo el inventario"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TABLA DE INVENTARIO Y ESTADO VACÍO -->
+    <section aria-label="Listado de dispositivos tecnológicos" class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <th class="py-3.5 px-5">CÓDIGO / DISPOSITIVO</th>
+              <th class="py-3.5 px-4">TIPO</th>
+              <th class="py-3.5 px-4">UBICACIÓN</th>
+              <th class="py-3.5 px-4">NIVEL DE FALLO</th>
+              <th class="py-3.5 px-4">ESTADO</th>
+              <th class="py-3.5 px-4">FECHA REPORTE</th>
+              <th class="py-3.5 px-5 text-right no-print">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-tbody" class="divide-y divide-slate-100 text-sm">
+            <!-- Filas generadas dinámicamente por JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ESTADO VACÍO (Se muestra cuando no hay registros) -->
+      <div id="empty-state" class="py-16 px-4 text-center flex flex-col items-center justify-center">
+        <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-[#0d9488]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="12" rx="2" />
+            <path d="M10 10l-1.5 1.5L10 13" />
+            <path d="M14 10l1.5 1.5L14 13" />
+            <line x1="2" y1="20" x2="22" y2="20" />
+          </svg>
+        </div>
+        <h2 class="text-base font-bold text-slate-800">Inventario Tecnológico Vacío</h2>
+        <p class="text-xs sm:text-sm text-slate-400 max-w-md mt-1.5 leading-relaxed">
+          Comience agregando su primer equipo o dispositivo tecnológico utilizando el botón superior "Nuevo Dispositivo".
+        </p>
+        <button
+          type="button"
+          id="empty-add-btn"
+          onclick="openDeviceModal()"
+          class="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0d9488] hover:bg-teal-700 text-white text-sm font-semibold shadow-sm transition cursor-pointer no-print"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span>Registrar Primer Dispositivo</span>
+        </button>
+      </div>
+
+      <!-- Estado sin resultados de búsqueda -->
+      <div id="no-results-state" class="hidden py-12 px-4 text-center">
+        <p class="text-sm font-semibold text-slate-600">No se encontraron dispositivos con los filtros seleccionados.</p>
+        <button
+          type="button"
+          onclick="resetFilters()"
+          class="mt-3 text-xs font-semibold text-teal-600 hover:text-teal-700 underline cursor-pointer"
+        >
+          Limpiar filtros de búsqueda
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== MODAL 1: NUEVO / EDITAR DISPOSITIVO ==================== -->
+  <div id="device-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-lg overflow-hidden animate-modal">
+      <div class="px-6 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect x="3" y="4" width="18" height="12" rx="2" />
+              <line x1="2" y1="20" x2="22" y2="20" />
+            </svg>
+          </div>
+          <h3 id="device-modal-title" class="text-base font-bold text-slate-800">Registrar Nuevo Dispositivo</h3>
+        </div>
+        <button type="button" onclick="closeDeviceModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="device-form" onsubmit="saveDevice(event)" class="p-6 space-y-4">
+        <input type="hidden" id="device-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="device-code" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+              Código Institucional *
+            </label>
+            <input
+              type="text"
+              id="device-code"
+              required
+              placeholder="Ej. PC-SF-001"
+              class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+            />
+          </div>
+          <div>
+            <label for="device-type" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+              Tipo de Equipo *
+            </label>
+            <select
+              id="device-type"
+              required
+              class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+            >
+              <option value="Computador de Escritorio">Computador de Escritorio</option>
+              <option value="Portátil">Portátil</option>
+              <option value="Proyector / Video Beam">Proyector / Video Beam</option>
+              <option value="Pantalla Interactiva">Pantalla Interactiva</option>
+              <option value="Red / Router">Red / Router</option>
+              <option value="Impresora">Impresora</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="device-name" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+            Nombre o Descripción del Equipo *
+          </label>
+          <input
+            type="text"
+            id="device-name"
+            required
+            placeholder="Ej. Lenovo ThinkCentre M720q - Puesto Docente"
+            class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+          />
+        </div>
+
+        <div>
+          <label for="device-location" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+            Ubicación en la Institución *
+          </label>
+          <input
+            type="text"
+            id="device-location"
+            required
+            placeholder="Ej. Sala de Sistemas 1, Aula 204, Rectoría"
+            class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="device-status" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+              Estado Operativo
+            </label>
+            <select
+              id="device-status"
+              onchange="syncLevelWithStatus()"
+              class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+            >
+              <option value="Funcionando">Funcionando (Operativo)</option>
+              <option value="Reportado">Reportado (Con incidencia)</option>
+              <option value="En Reparación">En Reparación (Taller)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="device-level" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+              Nivel de Fallo
+            </label>
+            <select
+              id="device-level"
+              class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+            >
+              <option value="0">Nivel 0 - Sin fallos</option>
+              <option value="1">Nivel 1 - Leve</option>
+              <option value="2">Nivel 2 - Moderado</option>
+              <option value="3">Nivel 3 - Fallo Grave</option>
+              <option value="4">Nivel 4 - Riesgo Crítico (Peligro)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="device-notes" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+            Observaciones / Detalle Técnico (Opcional)
+          </label>
+          <textarea
+            id="device-notes"
+            rows="2"
+            placeholder="Especificaciones, estado físico o detalles de la incidencia..."
+            class="w-full px-3.5 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500"
+          ></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2.5 border-t border-slate-100">
+          <button
+            type="button"
+            onclick="closeDeviceModal()"
+            class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#0d9488] hover:bg-teal-700 text-white shadow-sm transition cursor-pointer"
+          >
+            Guardar Dispositivo
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: REPORTAR FALLO ==================== -->
+  <div id="report-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-lg overflow-hidden animate-modal">
+      <div class="px-6 py-4 bg-red-50/70 border-b border-red-100 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-800">Reportar Fallo Tecnológico</h3>
+        </div>
+        <button type="button" onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="report-form" onsubmit="submitFaultReport(event)" class="p-6 space-y-4">
+        <div>
+          <label for="report-device-select" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+            Seleccionar Dispositivo Afectado *
+          </label>
+          <select
+            id="report-device-select"
+            required
+            class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500"
+          >
+            <!-- Opciones cargadas dinámicamente -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="report-level" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+              Nivel de Severidad *
+            </label>
+            <select
+              id="report-level"
+              required
+              class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500"
+            >
+              <option value="1">Nivel 1 - Leve (Software / Menor)</option>
+              <option value="2">Nivel 2 - Moderado (Afecta uso parcial)</option>
+              <option value="3" selected>Nivel 3 - Fallo Grave (Equipo inoperativo)</option>
+              <option value="4">Nivel 4 - Riesgo Crítico (Peligro eléctrico/físico)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="report-status" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+              Asignar Estado *
+            </label>
+            <select
+              id="report-status"
+              required
+              class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500"
+            >
+              <option value="Reportado">Reportado (Pendiente revisión)</option>
+              <option value="En Reparación">En Reparación (Enviar a soporte)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200/80 text-xs text-amber-800 space-y-1">
+          <p class="font-semibold">Guía de Clasificación de Severidad:</p>
+          <p>• <strong>Nivel 3 (Fallo Grave):</strong> Daño de hardware o sistema que impide el uso en clase.</p>
+          <p>• <strong>Nivel 4 (Riesgo Crítico - Peligro):</strong> Cortocircuito, sobrecalentamiento, chispas, cables expuestos o riesgo para estudiantes/docentes.</p>
+        </div>
+
+        <div>
+          <label for="report-description" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+            Descripción del Incidente *
+          </label>
+          <textarea
+            id="report-description"
+            rows="3"
+            required
+            placeholder="Explique qué sucede con el dispositivo (ej. No enciende, fuente de poder con olor a quemado, pantalla rota...)"
+            class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500"
+          ></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2.5 border-t border-slate-100">
+          <button
+            type="button"
+            onclick="closeReportModal()"
+            class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#ef4444] hover:bg-red-600 text-white shadow-sm transition cursor-pointer"
+          >
+            Registrar Reporte
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: CONFIRMACIÓN PERSONALIZADA ==================== -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-md p-6 animate-modal">
+      <div class="flex items-start gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <div>
+          <h3 id="confirm-title" class="text-base font-bold text-slate-800">Confirmar acción</h3>
+          <p id="confirm-message" class="text-sm text-slate-500 mt-1">¿Está seguro de continuar?</p>
+        </div>
+      </div>
+      <div class="mt-6 flex items-center justify-end gap-2.5">
+        <button
+          type="button"
+          onclick="closeConfirmModal()"
+          class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          id="confirm-action-btn"
+          class="px-4 py-2 rounded-xl text-sm font-semibold bg-red-600 hover:bg-red-700 text-white shadow-sm transition cursor-pointer"
+        >
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NOTIFICACIÓN FLOTANTE (TOAST) ==================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Supabase JavaScript SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- ==================== LÓGICA DE LA APLICACIÓN ==================== -->
+  <script>
+    // Configuración pública del proyecto. La publishable key está diseñada para el navegador;
+    // la seguridad real se aplica mediante Row Level Security (RLS) en Supabase.
+    const SUPABASE_URL = 'https://qcdxlowtirowoiitnplp.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_7jMuw9-vsEjAGHDmGkL-mQ_BWEUMycn';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+    let devices = [];
+    let currentUser = null;
+    let currentProfile = null;
+    let pendingConfirmCallback = null;
+    const roleNames = { administrador: 'Administrador', tecnico: 'Técnico', consulta: 'Consulta' };
+    const canManage = () => !!currentProfile && ['administrador', 'tecnico'].includes(currentProfile.role);
+    const isAdmin = () => !!currentProfile && currentProfile.role === 'administrador';
+
+    window.addEventListener('DOMContentLoaded', initializeApp);
+
+    async function initializeApp() {
+      const { data: { session }, error } = await supabaseClient.auth.getSession();
+      if (error) showAuthMessage(error.message, true);
+      if (session?.user) await enterApp(session.user);
+      else showSignedOut();
+      supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_OUT') showSignedOut();
+        else if (event === 'SIGNED_IN' && session?.user) setTimeout(() => enterApp(session.user), 0);
+      });
+    }
+
+    function showAuthMode(mode) {
+      const login = mode === 'login';
+      document.getElementById('login-form').classList.toggle('hidden', !login);
+      document.getElementById('signup-form').classList.toggle('hidden', login);
+      document.getElementById('login-tab').className = login ? 'flex-1 py-2.5 rounded-xl bg-teal-600 text-white text-sm font-semibold' : 'flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-sm font-semibold';
+      document.getElementById('signup-tab').className = !login ? 'flex-1 py-2.5 rounded-xl bg-teal-600 text-white text-sm font-semibold' : 'flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-sm font-semibold';
+      showAuthMessage('');
+    }
+
+    function showAuthMessage(message, isError = false) {
+      const el = document.getElementById('auth-message');
+      if (el) { el.textContent = message; el.className = `text-sm text-center mt-4 ${isError ? 'text-red-600' : 'text-slate-500'}`; }
+    }
+
+    function showSignedOut() {
+      currentUser = null; currentProfile = null; devices = [];
+      document.getElementById('auth-section').classList.remove('hidden');
+      document.getElementById('user-bar').classList.add('hidden');
+      document.getElementById('admin-panel').classList.add('hidden');
+      document.getElementById('app-main').classList.add('hidden');
+      showAuthMode('login');
+    }
+
+    async function signIn(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) return showAuthMessage(error.message, true);
+      // El listener SIGNED_IN se encarga de abrir la aplicación.
+    }
+
+    async function signUp(event) {
+      event.preventDefault();
+      const fullName = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const { data, error } = await supabaseClient.auth.signUp({
+        email, password, options: { data: { full_name: fullName } }
+      });
+      if (error) return showAuthMessage(error.message, true);
+      if (!data.session) {
+        showAuthMode('login');
+        showAuthMessage('Cuenta creada. Revisa tu correo para confirmar el registro y luego inicia sesión.');
+      }
+    }
+
+    async function signOut() {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) showToast(error.message, 'error');
+      else showSignedOut();
+    }
+
+    async function enterApp(user) {
+      currentUser = user;
+      const { data: profile, error } = await supabaseClient.from('profiles').select('id, full_name, role').eq('id', user.id).single();
+      if (error || !profile) {
+        showSignedOut();
+        showAuthMessage('No se pudo cargar tu perfil. Comprueba que el registro haya creado el perfil en Supabase.', true);
+        return;
+      }
+      currentProfile = profile;
+      document.getElementById('auth-section').classList.add('hidden');
+      document.getElementById('user-bar').classList.remove('hidden');
+      document.getElementById('app-main').classList.remove('hidden');
+      document.getElementById('user-name').textContent = profile.full_name || user.email;
+      document.getElementById('user-role').textContent = `${roleNames[profile.role] || profile.role} · ${user.email}`;
+      applyRolePermissions();
+      await loadDevices();
+      if (isAdmin()) await loadUsers();
+    }
+
+    function applyRolePermissions() {
+      const canEdit = canManage();
+      document.getElementById('empty-add-btn').classList.toggle('hidden', !canEdit);
+      document.getElementById('header-report-btn').classList.toggle('hidden', !canEdit);
+      document.getElementById('header-add-btn').classList.toggle('hidden', !canEdit);
+      document.getElementById('export-btn').classList.toggle('hidden', !canEdit);
+      document.getElementById('import-btn').classList.toggle('hidden', !canEdit);
+      document.getElementById('import-file-input').classList.toggle('hidden', true);
+      document.getElementById('clear-btn').classList.toggle('hidden', !isAdmin());
+      document.getElementById('admin-panel').classList.toggle('hidden', !isAdmin());
+    }
+
+    async function loadUsers() {
+      const container = document.getElementById('users-list');
+      const { data, error } = await supabaseClient.from('profiles').select('id, full_name, role, created_at').order('created_at', { ascending: true });
+      if (error) { container.textContent = `No se pudieron cargar los usuarios: ${error.message}`; return; }
+      container.innerHTML = '';
+      if (!data.length) { container.textContent = 'No hay usuarios registrados.'; return; }
+      data.forEach(profile => {
+        const row = document.createElement('div');
+        row.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 py-3';
+        const info = document.createElement('div');
+        const name = document.createElement('p'); name.className = 'font-semibold text-slate-700'; name.textContent = profile.full_name || 'Usuario sin nombre';
+        const email = document.createElement('p'); email.className = 'text-xs text-slate-400'; email.textContent = profile.id;
+        info.append(name, email);
+        const select = document.createElement('select');
+        select.className = 'px-3 py-2 border border-slate-200 rounded-lg text-xs font-semibold';
+        ['consulta','tecnico','administrador'].forEach(role => { const opt = document.createElement('option'); opt.value = role; opt.textContent = roleNames[role]; select.appendChild(opt); });
+        select.value = profile.role;
+        select.disabled = profile.id === currentUser.id;
+        select.title = profile.id === currentUser.id ? 'No puedes cambiar tu propio rol desde esta pantalla.' : 'Cambiar rol del usuario';
+        select.addEventListener('change', async () => {
+          select.disabled = true;
+          const { error: updateError } = await supabaseClient.rpc('admin_set_user_role', { target_user_id: profile.id, new_role: select.value });
+          if (updateError) { showToast(updateError.message, 'error'); select.value = profile.role; }
+          else { profile.role = select.value; showToast('Rol actualizado correctamente.', 'success'); }
+          select.disabled = profile.id === currentUser.id;
+        });
+        row.append(info, select); container.appendChild(row);
+      });
+    }
+
+    async function loadDevices() {
+      const { data, error } = await supabaseClient.from('devices').select('*').order('created_at', { ascending: false });
+      if (error) { showToast(`No se pudo cargar el inventario: ${error.message}`, 'error'); devices = []; }
+      else devices = data.map(row => ({ id: row.id, code: row.code, type: row.type, name: row.name, location: row.location || '', status: row.status || 'Funcionando', faultLevel: Number(row.fault_level || 0), notes: row.notes || '', reportDate: row.report_date || '' }));
+      updateKPIs(); renderInventory();
+    }
+
+    function getCurrentFormattedDate() {
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+    }
+
+    function updateKPIs() {
+      const total = devices.length;
+      const working = devices.filter(d => d.status === 'Funcionando').length;
+      const reported = devices.filter(d => d.status === 'Reportado').length;
+      const repair = devices.filter(d => d.status === 'En Reparación').length;
+      const severe = devices.filter(d => Number(d.faultLevel) === 3).length;
+      const critical = devices.filter(d => Number(d.faultLevel) === 4).length;
+      document.getElementById('kpi-total').textContent = total;
+      document.getElementById('kpi-working').textContent = working;
+      document.getElementById('kpi-reported').textContent = reported;
+      document.getElementById('kpi-repair').textContent = repair;
+      document.getElementById('kpi-severe').textContent = severe;
+      document.getElementById('kpi-critical').textContent = critical;
+    }
+
+    function renderInventory() {
+      const tbody = document.getElementById('inventory-tbody');
+      const emptyState = document.getElementById('empty-state');
+      const noResultsState = document.getElementById('no-results-state');
+      const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
+      const typeFilter = document.getElementById('filter-type').value;
+      const statusFilter = document.getElementById('filter-status').value;
+      tbody.innerHTML = '';
+      if (devices.length === 0) { emptyState.classList.remove('hidden'); noResultsState.classList.add('hidden'); return; }
+      emptyState.classList.add('hidden');
+      const filtered = devices.filter(item => item.code.toLowerCase().includes(searchTerm) || item.name.toLowerCase().includes(searchTerm) || (item.location || '').toLowerCase().includes(searchTerm) || (item.notes || '').toLowerCase().includes(searchTerm)).filter(item => (typeFilter === 'ALL' || item.type === typeFilter) && (statusFilter === 'ALL' || item.status === statusFilter));
+      if (filtered.length === 0) { noResultsState.classList.remove('hidden'); return; }
+      noResultsState.classList.add('hidden');
+      filtered.forEach(device => {
+        const tr = document.createElement('tr'); tr.className = 'hover:bg-slate-50/90 transition-colors';
+        const actions = [];
+        if (canManage() && device.status !== 'Funcionando') actions.push(`<button type="button" onclick="markAsWorking('${device.id}')" class="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600" title="Marcar como Funcionando">✓</button>`);
+        if (canManage()) actions.push(`<button type="button" onclick="openReportModal('${device.id}')" class="p-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-600" title="Reportar fallo">!</button>`);
+        if (canManage()) actions.push(`<button type="button" onclick="openDeviceModal('${device.id}')" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600" title="Editar dispositivo">✎</button>`);
+        if (isAdmin()) actions.push(`<button type="button" onclick="confirmDeleteDevice('${device.id}')" class="p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-500" title="Eliminar dispositivo">×</button>`);
+        tr.innerHTML = `
+          <td class="py-4 px-5"><div class="flex flex-col"><span class="text-xs font-bold text-teal-700 bg-teal-50 border border-teal-100 px-2 py-0.5 rounded-md w-fit">${escapeHTML(device.code)}</span><span class="font-semibold text-slate-800 mt-1">${escapeHTML(device.name)}</span>${device.notes ? `<span class="text-xs text-slate-400 mt-0.5 line-clamp-1" title="${escapeHTML(device.notes)}">${escapeHTML(device.notes)}</span>` : ''}</div></td>
+          <td class="py-4 px-4 text-slate-600 font-medium">${escapeHTML(device.type)}</td>
+          <td class="py-4 px-4 text-slate-600">${escapeHTML(device.location)}</td>
+          <td class="py-4 px-4">${getLevelBadgeHTML(Number(device.faultLevel))}</td>
+          <td class="py-4 px-4">${getStatusBadgeHTML(device.status)}</td>
+          <td class="py-4 px-4 text-xs text-slate-500">${device.reportDate ? escapeHTML(device.reportDate) : '—'}</td>
+          <td class="py-4 px-5 text-right no-print"><div class="inline-flex items-center justify-end gap-1.5">${actions.join('')}</div></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function getLevelBadgeHTML(level) {
+      const labels = { 4: ['bg-red-100 text-red-700 border-red-200','☢ Nivel 4 · Riesgo Crítico (Peligro)'], 3: ['bg-orange-100 text-orange-700 border-orange-200','🔥 Nivel 3 · Fallo Grave'], 2: ['bg-amber-100 text-amber-800 border-amber-200','Nivel 2 · Moderado'], 1: ['bg-yellow-50 text-yellow-700 border-yellow-200','Nivel 1 · Leve'] };
+      const item = labels[level] || ['bg-slate-100 text-slate-500','Nivel 0 · Sin fallos'];
+      return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${item[0]}">${item[1]}</span>`;
+    }
+
+    function getStatusBadgeHTML(status) {
+      const styles = { Funcionando: 'bg-emerald-50 text-emerald-700 border-emerald-200', Reportado: 'bg-amber-50 text-amber-700 border-amber-200', 'En Reparación': 'bg-purple-50 text-purple-700 border-purple-200' };
+      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[status] || styles.Funcionando}">${escapeHTML(status || 'Funcionando')}</span>`;
+    }
+
+    function openDeviceModal(deviceId = null) {
+      if (!canManage()) return showToast('Tu rol no permite modificar dispositivos.', 'warning');
+      const modal = document.getElementById('device-modal'); const title = document.getElementById('device-modal-title'); const form = document.getElementById('device-form'); form.reset();
+      if (deviceId) {
+        const existing = devices.find(d => d.id === deviceId); if (!existing) return;
+        title.textContent = 'Editar Dispositivo Tecnológico';
+        document.getElementById('device-id').value = existing.id;
+        document.getElementById('device-code').value = existing.code;
+        document.getElementById('device-type').value = existing.type;
+        document.getElementById('device-name').value = existing.name;
+        document.getElementById('device-location').value = existing.location;
+        document.getElementById('device-status').value = existing.status;
+        document.getElementById('device-level').value = existing.faultLevel;
+        document.getElementById('device-notes').value = existing.notes || '';
+      } else {
+        title.textContent = 'Registrar Nuevo Dispositivo'; document.getElementById('device-id').value = '';
+        document.getElementById('device-code').value = `SF-EQ-${String(devices.length + 1).padStart(3, '0')}`;
+        document.getElementById('device-status').value = 'Funcionando'; document.getElementById('device-level').value = '0';
+      }
+      modal.classList.remove('hidden'); modal.classList.add('flex');
+    }
+    function closeDeviceModal() { const modal = document.getElementById('device-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
+    function syncLevelWithStatus() { const status = document.getElementById('device-status').value; const level = document.getElementById('device-level'); if (status === 'Funcionando') level.value = '0'; else if (level.value === '0') level.value = '1'; }
+
+    async function saveDevice(event) {
+      event.preventDefault(); if (!canManage()) return showToast('No tienes permisos para guardar dispositivos.', 'error');
+      const id = document.getElementById('device-id').value;
+      const status = document.getElementById('device-status').value;
+      const faultLevel = Number(document.getElementById('device-level').value);
+      const previous = devices.find(d => d.id === id);
+      const payload = {
+        code: document.getElementById('device-code').value.trim(), type: document.getElementById('device-type').value,
+        name: document.getElementById('device-name').value.trim(), location: document.getElementById('device-location').value.trim(),
+        status, fault_level: faultLevel, notes: document.getElementById('device-notes').value.trim(),
+        report_date: (status !== 'Funcionando' || faultLevel > 0) ? getCurrentFormattedDate() : (previous?.reportDate || null)
+      };
+      let query = supabaseClient.from('devices');
+      let result;
+      if (id) result = await query.update(payload).eq('id', id);
+      else result = await query.insert({ ...payload, created_by: currentUser.id });
+      if (result.error) return showToast(`No se pudo guardar: ${result.error.message}`, 'error');
+      showToast(id ? 'Dispositivo actualizado correctamente.' : 'Dispositivo registrado correctamente.', 'success');
+      closeDeviceModal(); await loadDevices();
+    }
+
+    function openReportModal(preselectedId = null) {
+      if (!canManage()) return showToast('Tu rol no permite registrar reportes.', 'warning');
+      if (!devices.length) { showToast('Primero debe registrar al menos un dispositivo.', 'warning'); return openDeviceModal(); }
+      const modal = document.getElementById('report-modal'); const select = document.getElementById('report-device-select'); document.getElementById('report-form').reset(); select.innerHTML = '';
+      devices.forEach(dev => { const option = document.createElement('option'); option.value = dev.id; option.textContent = `[${dev.code}] ${dev.name} — (${dev.location})`; select.appendChild(option); });
+      if (preselectedId) select.value = preselectedId;
+      modal.classList.remove('hidden'); modal.classList.add('flex');
+    }
+    function closeReportModal() { const modal = document.getElementById('report-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
+
+    async function submitFaultReport(event) {
+      event.preventDefault(); if (!canManage()) return showToast('No tienes permisos para reportar fallos.', 'error');
+      const deviceId = document.getElementById('report-device-select').value;
+      const level = Number(document.getElementById('report-level').value);
+      const newStatus = document.getElementById('report-status').value;
+      const description = document.getElementById('report-description').value.trim();
+      const device = devices.find(d => d.id === deviceId); if (!device) return;
+      const { error: reportError } = await supabaseClient.from('fault_reports').insert({ device_id: deviceId, description, severity: String(level), status: 'pendiente', reported_by: currentUser.id });
+      if (reportError) return showToast(`No se pudo registrar el reporte: ${reportError.message}`, 'error');
+      const { error: deviceError } = await supabaseClient.from('devices').update({ fault_level: level, status: newStatus, notes: description, report_date: getCurrentFormattedDate() }).eq('id', deviceId);
+      if (deviceError) showToast(`El reporte se guardó, pero no se actualizó el equipo: ${deviceError.message}`, 'warning');
+      else showToast(`Fallo reportado en ${device.code}.`, 'success');
+      closeReportModal(); await loadDevices();
+    }
+
+    async function markAsWorking(deviceId) {
+      if (!canManage()) return;
+      const { error } = await supabaseClient.from('devices').update({ status: 'Funcionando', fault_level: 0, notes: 'Equipo verificado y operativo.' }).eq('id', deviceId);
+      if (error) return showToast(error.message, 'error');
+      await loadDevices(); showToast('Equipo marcado como Funcionando.', 'success');
+    }
+
+    function confirmDeleteDevice(deviceId) {
+      if (!isAdmin()) return showToast('Solo el administrador puede eliminar equipos.', 'warning');
+      const dev = devices.find(d => d.id === deviceId); if (!dev) return;
+      openConfirmModal('Eliminar Dispositivo', `¿Está seguro de eliminar el equipo "${dev.code} - ${dev.name}" del inventario?`, async () => {
+        const { error } = await supabaseClient.from('devices').delete().eq('id', deviceId);
+        if (error) showToast(error.message, 'error'); else { await loadDevices(); showToast('Dispositivo eliminado.', 'success'); }
+      });
+    }
+
+    function openClearConfirmModal() {
+      if (!isAdmin()) return showToast('Solo el administrador puede vaciar el inventario.', 'warning');
+      if (!devices.length) return showToast('El inventario ya se encuentra vacío.', 'info');
+      openConfirmModal('Vaciar Inventario Tecnológico', 'Esta acción eliminará permanentemente todos los dispositivos del inventario. ¿Desea continuar?', async () => {
+        const { error } = await supabaseClient.from('devices').delete().not('id', 'is', null);
+        if (error) showToast(error.message, 'error'); else { await loadDevices(); showToast('Inventario vaciado.', 'info'); }
+      });
+    }
+
+    function openConfirmModal(title, message, onConfirm) {
+      document.getElementById('confirm-title').textContent = title; document.getElementById('confirm-message').textContent = message; pendingConfirmCallback = onConfirm;
+      document.getElementById('confirm-action-btn').onclick = async () => { if (typeof pendingConfirmCallback === 'function') await pendingConfirmCallback(); closeConfirmModal(); };
+      const modal = document.getElementById('confirm-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
+    }
+    function closeConfirmModal() { const modal = document.getElementById('confirm-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); pendingConfirmCallback = null; }
+    function resetFilters() { document.getElementById('search-input').value = ''; document.getElementById('filter-type').value = 'ALL'; document.getElementById('filter-status').value = 'ALL'; renderInventory(); }
+
+    function exportToExcel() {
+      if (!canManage()) return showToast('No tienes permisos para exportar.', 'warning');
+      if (!devices.length) return showToast('No hay dispositivos registrados para exportar.', 'warning');
+      const headers = ['Código','Dispositivo','Tipo','Ubicación','Nivel de Fallo','Estado','Fecha Reporte','Observaciones'];
+      const rows = devices.map(d => [d.code,d.name,d.type,d.location,`Nivel ${d.faultLevel}`,d.status,d.reportDate,d.notes].map(v => `"${String(v || '').replace(/"/g,'""')}"`));
+      const blob = new Blob(['\uFEFF' + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `Inventario_Tecnologico_San_Fernando_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+      showToast('Inventario exportado correctamente.', 'success');
+    }
+
+    function importFile(event) {
+      if (!canManage()) return showToast('No tienes permisos para importar.', 'warning');
+      const file = event.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async e => {
+        try {
+          let imported = [];
+          if (file.name.toLowerCase().endsWith('.json')) {
+            const parsed = JSON.parse(e.target.result); if (!Array.isArray(parsed)) throw new Error('JSON inválido'); imported = parsed;
+          } else if (file.name.toLowerCase().endsWith('.csv')) {
+            const lines = e.target.result.split(/\r?\n/).filter(line => line.trim()); if (lines.length < 2) throw new Error('CSV vacío');
+            const sep = lines[0].includes(';') ? ';' : ',';
+            imported = lines.slice(1).map((line,i) => { const c = line.split(sep).map(v => v.replace(/^"|"$/g,'').replace(/""/g,'"').trim()); const m = (c[4] || '0').match(/\d+/); return { code:c[0] || `EQ-${i+1}`, name:c[1] || 'Equipo importado', type:c[2] || 'Otro', location:c[3] || 'Sin asignar', fault_level:m ? Number(m[0]) : 0, status:c[5] || 'Funcionando', report_date:c[6] || null, notes:c[7] || '', created_by:currentUser.id }; });
+          } else throw new Error('Formato no compatible');
+          const payload = imported.map(d => ({ code:d.code, name:d.name, type:d.type, location:d.location || '', status:d.status || 'Funcionando', fault_level:Number(d.fault_level ?? d.faultLevel ?? 0), notes:d.notes || '', report_date:d.report_date || d.reportDate || null, created_by:currentUser.id }));
+          if (!payload.length) throw new Error('No se encontraron equipos');
+          const { error } = await supabaseClient.from('devices').upsert(payload, { onConflict:'code', ignoreDuplicates:true });
+          if (error) throw error;
+          await loadDevices(); showToast(`Importación procesada: ${payload.length} registros. Los códigos repetidos se omitieron.`, 'success');
+        } catch (err) { showToast(`No se pudo importar: ${err.message}`, 'error'); }
+        event.target.value = '';
+      };
+      reader.readAsText(file, 'UTF-8');
+    }
+
+    function escapeHTML(str) { return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container'); const toast = document.createElement('div');
+      const colors = { success:'bg-slate-900 text-white border-l-4 border-emerald-400', error:'bg-slate-900 text-white border-l-4 border-red-500', warning:'bg-slate-900 text-white border-l-4 border-amber-400', info:'bg-slate-900 text-white border-l-4 border-teal-400' };
+      toast.className = `${colors[type] || colors.info} px-4 py-3 rounded-xl shadow-lg text-xs sm:text-sm font-medium flex items-center gap-2.5 animate-modal pointer-events-auto max-w-sm`;
+      toast.textContent = message; container.appendChild(toast);
+      setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.25s ease'; setTimeout(() => toast.remove(), 260); }, 3400);
+    }
+  </script>
+</body>
+</html>
